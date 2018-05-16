@@ -14,3 +14,16 @@ def home(request):
         'packages': packages
     }
     return render(request, 'home/index.html', context)
+
+from home.models import CustomText, HomePage
+
+
+def home(request):
+    packages = [
+    ]
+    context = {
+        'customtext': CustomText.objects.first(),
+        'homepage': HomePage.objects.first(),
+        'packages': packages
+    }
+    return render(request, 'home/index.html', context)

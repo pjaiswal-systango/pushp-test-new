@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites'
+    'django.contrib.sites'
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,49 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+import environ
+env = environ.Env()
+ALLOWED_HOSTS = ['*']
+SITE_ID = 1
+MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
+
+DATABASES = {
+    'default': env.db()
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+LOCAL_APPS = [
+    'home',
+    'home',
+]
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
+    'bootstrap4',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+]
+INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
+
+# allauth
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = None
+LOGIN_REDIRECT_URL = '/'
 
 import environ
 env = environ.Env()
